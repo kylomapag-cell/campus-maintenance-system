@@ -1,0 +1,117 @@
+<%- include('../partials/header') %>
+
+<div class="row justify-content-center my-4">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4 p-md-5">
+        <div class="text-center mb-4">
+          <div class="d-inline-flex p-3 bg-primary bg-opacity-10 text-primary rounded-circle mb-3">
+            <i class="bi bi-person-plus fs-1"></i>
+          </div>
+          <h2 class="h4 fw-bold">Create Campus Account</h2>
+          <p class="text-muted small">Register to report and monitor campus maintenance work orders</p>
+        </div>
+
+        <!-- Inclusive Notice (IR4: Non-Discriminatory Data) -->
+        <div class="alert alert-light border small text-muted d-flex align-items-center mb-4">
+          <i class="bi bi-info-circle text-primary me-2 fs-5"></i>
+          <div>
+            <strong>Inclusive Registration:</strong> In accordance with campus data privacy guidelines (IR4), we only collect your institutional email and preferred name without asking for gender or titles.
+          </div>
+        </div>
+
+        <form action="/register" method="POST" novalidate>
+          <div class="row g-3">
+            <div class="col-12">
+              <label for="name" class="form-label fw-semibold">Preferred Full Name <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="name" 
+                  name="name" 
+                  placeholder="e.g., Juan Santos or Maria Cruz" 
+                  value="<%= typeof values !== 'undefined' && values.name ? values.name : '' %>" 
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="email" class="form-label fw-semibold">Institutional Email <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email" 
+                  name="email" 
+                  placeholder="e.g., student.id@my.cspc.edu.ph or faculty@cspc.edu.ph" 
+                  value="<%= typeof values !== 'undefined' && values.email ? values.email : '' %>" 
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="role" class="form-label fw-semibold">Campus Role <span class="text-danger">*</span></label>
+              <select class="form-select" id="role" name="role" required>
+                <option value="student" <%= typeof values !== 'undefined' && values.role === 'student' ? 'selected' : '' %>>Student</option>
+                <option value="faculty" <%= typeof values !== 'undefined' && values.role === 'faculty' ? 'selected' : '' %>>Faculty / Instructor</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="department" class="form-label fw-semibold">College / Department</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="department" 
+                name="department" 
+                placeholder="e.g., College of Computer Studies" 
+                value="<%= typeof values !== 'undefined' && values.department ? values.department : '' %>"
+              >
+            </div>
+
+            <div class="col-md-6">
+              <label for="password" class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                name="password" 
+                placeholder="At least 6 characters" 
+                required
+              >
+            </div>
+
+            <div class="col-md-6">
+              <label for="confirmPassword" class="form-label fw-semibold">Confirm Password <span class="text-danger">*</span></label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="confirmPassword" 
+                name="confirmPassword" 
+                placeholder="Re-type password" 
+                required
+              >
+            </div>
+
+            <div class="col-12 mt-4">
+              <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm">
+                <i class="bi bi-check2-circle me-1"></i> Register Account
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="text-center mt-4 pt-3 border-top">
+          <p class="small text-muted mb-0">Already have an account? <a href="/login" class="fw-semibold text-primary">Sign in here</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

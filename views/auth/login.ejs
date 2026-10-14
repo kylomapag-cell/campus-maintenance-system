@@ -1,0 +1,85 @@
+<%- include('../partials/header') %>
+
+<div class="row justify-content-center my-4">
+  <div class="col-md-7 col-lg-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4 p-md-5">
+        <div class="text-center mb-4">
+          <div class="d-inline-flex p-3 bg-primary bg-opacity-10 text-primary rounded-circle mb-3">
+            <i class="bi bi-shield-lock fs-1"></i>
+          </div>
+          <h2 class="h4 fw-bold">Sign In to CSPC Maintenance</h2>
+          <p class="text-muted small">Enter your campus credentials to access your dashboard</p>
+        </div>
+
+        <form action="/login" method="POST" novalidate>
+          <div class="mb-3">
+            <label for="email" class="form-label fw-semibold">Institutional Email <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                name="email" 
+                placeholder="name@cspc.edu.ph" 
+                value="<%= typeof values !== 'undefined' && values.email ? values.email : '' %>" 
+                required 
+                autocomplete="username"
+              >
+            </div>
+            <div class="form-text">Students, faculty, and staff can use their registered CSPC email.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="password" class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-key"></i></span>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                name="password" 
+                placeholder="••••••••" 
+                required 
+                autocomplete="current-password"
+              >
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+          </button>
+        </form>
+
+        <div class="text-center mt-4 pt-3 border-top">
+          <p class="small text-muted mb-0">Don't have an account yet? <a href="/register" class="fw-semibold text-primary">Create one here</a></p>
+        </div>
+
+        <!-- Quick Showcase / Defense Demo Accounts Switcher -->
+        <div class="mt-4 p-3 bg-light rounded-3 border">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="fw-bold text-secondary text-uppercase" style="font-size: 0.7rem;">Quick Fill For Project Defense</small>
+            <span class="badge bg-secondary-subtle text-secondary" style="font-size: 0.65rem;">One-Click Demo</span>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary demo-login-btn demo-pill" data-email="mark.ramirez@my.cspc.edu.ph" data-password="StudentPass123!">
+              <i class="bi bi-mortarboard me-1"></i> Student (Mark)
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary demo-login-btn demo-pill" data-email="maria.santos@cspc.edu.ph" data-password="FacultyPass123!">
+              <i class="bi bi-person-workspace me-1"></i> Faculty (Dr. Santos)
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary demo-login-btn demo-pill" data-email="tech.cruz@cspc.edu.ph" data-password="TechPass123!">
+              <i class="bi bi-wrench me-1"></i> Technician (Juan)
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary demo-login-btn demo-pill" data-email="admin@cspc.edu.ph" data-password="AdminPass123!">
+              <i class="bi bi-shield-check me-1"></i> Admin (Engr. Gomez)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
