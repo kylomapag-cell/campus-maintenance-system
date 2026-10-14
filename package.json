@@ -1,0 +1,35 @@
+{
+  "name": "campus-maintenance-system",
+  "version": "1.0.0",
+  "description": "CSPC Campus Maintenance System - Node.js and Express Web Application for reporting, tracking, and managing campus facility repairs.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "seed": "node config/seed.js",
+    "test": "node tests/test-system.js"
+  },
+  "keywords": [
+    "campus-maintenance",
+    "express",
+    "nodejs",
+    "sqlite",
+    "ejs",
+    "cspc"
+  ],
+  "authors": [
+    "Nicole A. Delloson",
+    "Kyla N. Lomapag",
+    "Mary Danielle O. Panit"
+  ],
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^18.0.7",
+    "ejs": "^7.0.1",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "multer": "^2.4.0"
+  }
+}
