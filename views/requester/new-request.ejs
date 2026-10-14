@@ -1,0 +1,190 @@
+<%- include('../partials/header') %>
+
+<div class="row justify-content-center my-3">
+  <div class="col-lg-9 col-xl-8">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <div>
+        <h1 class="h3 fw-bold mb-1">Submit Maintenance Request</h1>
+        <p class="text-muted small mb-0">Report broken physical facilities, classroom fixtures, or physical accessibility barriers.</p>
+      </div>
+      <a href="/dashboard" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+      </a>
+    </div>
+
+    <!-- Accessibility Banner (IR2: High Priority Trigger) -->
+    <div id="accessibilityAlert" class="alert accessibility-banner shadow-sm d-none mb-4 p-3 rounded-3" role="alert">
+      <div class="d-flex align-items-start gap-2">
+        <i class="bi bi-universal-access-circle fs-3 text-warning flex-shrink-0"></i>
+        <div>
+          <strong class="d-block text-dark">Accessibility Barrier Detected (IR2)</strong>
+          <small class="text-muted">
+            Reports concerning ramps, railings, doors, pathways, or elevators are automatically classified as 
+            <span class="badge badge-priority-high">High Priority</span> to ensure prompt access for students and campus personnel with mobility needs.
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4 p-md-5">
+        <form action="/requests/new" method="POST" enctype="multipart/form-data" novalidate>
+          
+          <!-- Title -->
+          <div class="mb-4">
+            <label for="title" class="form-label fw-bold">Issue Title / Subject <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control form-control-lg fs-6" 
+              id="title" 
+              name="title" 
+              placeholder="e.g., Leaking water pipe under washbasin or Broken projector mount" 
+              value="<%= typeof values !== 'undefined' && values.title ? values.title : '' %>" 
+              required
+            >
+            <div class="form-text">Provide a concise, specific summary of the malfunction.</div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <!-- Category -->
+            <div class="col-md-6">
+              <label for="category" class="form-label fw-bold">Issue Category <span class="text-danger">*</span></label>
+              <select class="form-select" id="category" name="category" required>
+                <option value="">-- Select Category --</option>
+                <% categories.forEach(cat => { %>
+                  <option value="<%= cat %>" <%= typeof values !== 'undefined' && values.category === cat ? 'selected' : '' %>>
+                    <%= cat %> <%= cat === 'Accessibility Barrier' ? '♿ (Auto-High Priority)' : '' %>
+                  </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <!-- Priority -->
+            <div class="col-md-6">
+              <label for="priority" class="form-label fw-bold">Priority Level <span class="text-danger">*</span></label>
+              <select class="form-select" id="priority" name="priority" required>
+                <option value="Low" <%= typeof values !== 'undefined' && values.priority === 'Low' ? 'selected' : '' %>>Low (Minor cosmetic or non-blocking)</option>
+                <option value="Normal" <%= typeof values === 'undefined' || !values.priority || values.priority === 'Normal' ? 'selected' : '' %>>Normal (Standard repair turnaround)</option>
+                <option value="High" <%= typeof values !== 'undefined' && values.priority === 'High' ? 'selected' : '' %>>High (Disrupts classes or accessibility)</option>
+                <option value="Urgent" <%= typeof values !== 'undefined' && values.priority === 'Urgent' ? 'selected' : '' %>>Urgent (Safety risk, flooding, electrical fire hazard)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Location Section (AI-3 / FN-2) -->
+          <div class="p-3 bg-light rounded-3 border mb-4">
+            <h6 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+              <i class="bi bi-geo-alt-fill text-primary"></i> Campus Location Details
+            </h6>
+
+            <div class="row g-3">
+              <div class="col-md-5">
+                <label for="building" class="form-label fw-semibold">Building <span class="text-danger">*</span></label>
+                <select class="form-select" id="building" name="building" required>
+                  <option value="">-- Choose Building --</option>
+                  <% buildings.forEach(bldg => { %>
+                    <option value="<%= bldg %>" <%= typeof values !== 'undefined' && values.building === bldg ? 'selected' : '' %>>
+                      <%= bldg %>
+                    </option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label for="floor" class="form-label fw-semibold">Floor Level <span class="text-danger">*</span></label>
+                <select class="form-select" id="floor" name="floor" required>
+                  <option value="Ground Floor" <%= typeof values !== 'undefined' && values.floor === 'Ground Floor' ? 'selected' : '' %>>Ground Floor</option>
+                  <option value="2nd Floor" <%= typeof values !== 'undefined' && values.floor === '2nd Floor' ? 'selected' : '' %>>2nd Floor</option>
+                  <option value="3rd Floor" <%= typeof values !== 'undefined' && values.floor === '3rd Floor' ? 'selected' : '' %>>3rd Floor</option>
+                  <option value="4th Floor" <%= typeof values !== 'undefined' && values.floor === '4th Floor' ? 'selected' : '' %>>4th Floor</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label for="room" class="form-label fw-semibold">Room / Specific Area <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="room" 
+                  name="room" 
+                  list="roomSuggestions" 
+                  placeholder="e.g., Room 302 or Canteen" 
+                  value="<%= typeof values !== 'undefined' && values.room ? values.room : '' %>" 
+                  required
+                >
+                <datalist id="roomSuggestions">
+                  <!-- Populated dynamically via main.js based on chosen building -->
+                </datalist>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-4">
+            <label for="description" class="form-label fw-bold">Detailed Problem Description <span class="text-danger">*</span></label>
+            <textarea 
+              class="form-control" 
+              id="description" 
+              name="description" 
+              rows="4" 
+              placeholder="Describe what is damaged, what symptoms are occurring, and any hazard risks..." 
+              required
+            ><%= typeof values !== 'undefined' && values.description ? values.description : '' %></textarea>
+            <div class="form-text">Provide enough detail so the Physical Plant technician can prepare appropriate tools and replacement parts.</div>
+          </div>
+
+          <!-- Photo Upload (FN-3 / AI-1) -->
+          <div class="mb-4">
+            <label for="photoInput" class="form-label fw-bold">
+              <i class="bi bi-camera me-1 text-primary"></i> Upload Damage Photo (Recommended)
+            </label>
+            <input 
+              class="form-control" 
+              type="file" 
+              id="photoInput" 
+              name="photo" 
+              accept="image/*"
+            >
+            <div class="form-text">Take a photo on your mobile phone or upload an image file (JPG, PNG, WEBP, up to 5MB).</div>
+            
+            <!-- Live Preview Container -->
+            <div id="photoPreviewContainer" class="mt-3 d-none">
+              <div class="small fw-semibold text-muted mb-1">Selected Photo Preview:</div>
+              <img id="photoPreview" src="#" alt="Damage photo preview" class="ticket-photo-preview img-fluid rounded border">
+            </div>
+          </div>
+
+          <!-- Safety & Privacy for Private Areas (IR3) -->
+          <div class="p-3 bg-light rounded-3 border mb-4">
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="checkbox" 
+                id="is_private_area" 
+                name="is_private_area" 
+                value="1" 
+                <%= typeof values !== 'undefined' && values.is_private_area ? 'checked' : '' %>
+              >
+              <label class="form-check-label fw-semibold text-dark" for="is_private_area">
+                <i class="bi bi-shield-shaded text-success me-1"></i> This issue is located in a Private Area (e.g., Comfort Room or Single-Occupant Office)
+              </label>
+            </div>
+            <div class="small text-muted mt-2 ps-4">
+              <strong>Occupant Safety Guarantee (IR3):</strong> When checked, the assigned technician's full name, official CSPC Staff ID, and photo badge will be displayed on your ticket before they arrive at the room.
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="d-flex justify-content-end gap-2 pt-2">
+            <a href="/dashboard" class="btn btn-outline-secondary px-4">Cancel</a>
+            <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow-sm">
+              <i class="bi bi-send-check me-1"></i> Submit Request
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
