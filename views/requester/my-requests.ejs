@@ -1,0 +1,150 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+  <div>
+    <h1 class="h3 fw-bold mb-1">My Maintenance Requests</h1>
+    <p class="text-muted small mb-0">Review the status and progress history of all issues submitted by your account.</p>
+  </div>
+  <a href="/requests/new" class="btn btn-primary px-3 py-2 fw-semibold shadow-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-circle"></i>
+    <span>Submit New Request</span>
+  </a>
+</div>
+
+<!-- Filters Card -->
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body p-3">
+    <form action="/requests" method="GET" class="row g-2 align-items-center">
+      <div class="col-md-7 col-lg-8">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+          <input 
+            type="text" 
+            class="form-control border-start-0" 
+            name="search" 
+            placeholder="Search by ticket #, title, building, or room..." 
+            value="<%= typeof search !== 'undefined' ? search : '' %>"
+          >
+        </div>
+      </div>
+
+      <div class="col-md-3 col-lg-2">
+        <select class="form-select" name="status" onchange="this.form.submit()">
+          <option value="all" <%= typeof status === 'undefined' || status === 'all' ? 'selected' : '' %>>All Statuses</option>
+          <option value="Pending" <%= typeof status !== 'undefined' && status === 'Pending' ? 'selected' : '' %>>Pending</option>
+          <option value="In Progress" <%= typeof status !== 'undefined' && status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+          <option value="Completed" <%= typeof status !== 'undefined' && status === 'Completed' ? 'selected' : '' %>>Completed</option>
+        </select>
+      </div>
+
+      <div class="col-md-2 col-lg-2 d-flex gap-2">
+        <button type="submit" class="btn btn-outline-primary w-100 fw-semibold">Filter</button>
+        <% if (search || (status && status !== 'all')) { %>
+          <a href="/requests" class="btn btn-outline-secondary" title="Clear Filters"><i class="bi bi-x-lg"></i></a>
+        <% } %>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Requests Table -->
+<div class="card shadow-sm border-0">
+  <div class="card-body p-0">
+    <% if (requests && requests.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col" class="ps-4">Ticket</th>
+              <th scope="col">Title &amp; Problem</th>
+              <th scope="col">Building &amp; Room</th>
+              <th scope="col">Category</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Status</th>
+              <th scope="col">Assigned Tech</th>
+              <th scope="col">Date Logged</th>
+              <th scope="col" class="text-end pe-4">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% requests.forEach(r => { %>
+              <tr>
+                <td class="ps-4 fw-bold">
+                  <a href="/requests/<%= r.id %>" class="text-decoration-none">
+                    #<%= r.ticket_number %>
+                  </a>
+                </td>
+                <td>
+                  <div class="fw-semibold text-dark"><%= r.title %></div>
+                  <div class="text-muted small text-truncate" style="max-width: 280px;"><%= r.description %></div>
+                  <% if (r.is_private_area) { %>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle mt-1" style="font-size: 0.7rem;">
+                      <i class="bi bi-shield-check me-1"></i>Private Area (ID Protected)
+                    </span>
+                  <% } %>
+                </td>
+                <td>
+                  <div class="fw-medium text-dark"><%= r.building %></div>
+                  <small class="text-muted"><%= r.floor %> - <%= r.room %></small>
+                </td>
+                <td>
+                  <span class="badge bg-light text-dark border"><%= r.category %></span>
+                </td>
+                <td>
+                  <% if (r.priority === 'Urgent') { %>
+                    <span class="badge badge-priority-urgent">Urgent</span>
+                  <% } else if (r.priority === 'High') { %>
+                    <span class="badge badge-priority-high">High</span>
+                  <% } else if (r.priority === 'Normal') { %>
+                    <span class="badge badge-priority-normal">Normal</span>
+                  <% } else { %>
+                    <span class="badge badge-priority-low">Low</span>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (r.status === 'Pending') { %>
+                    <span class="badge badge-status-pending"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
+                  <% } else if (r.status === 'In Progress') { %>
+                    <span class="badge badge-status-in-progress"><i class="bi bi-wrench me-1"></i>In Progress</span>
+                  <% } else if (r.status === 'Completed') { %>
+                    <span class="badge badge-status-completed"><i class="bi bi-check-circle me-1"></i>Completed</span>
+                  <% } else { %>
+                    <span class="badge badge-status-cancelled">Cancelled</span>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (r.technician_name) { %>
+                    <div class="fw-semibold small text-dark"><%= r.technician_name %></div>
+                    <% if (r.technician_staff_id) { %>
+                      <small class="text-primary font-monospace"><%= r.technician_staff_id %></small>
+                    <% } %>
+                  <% } else { %>
+                    <span class="text-muted small fst-italic">Awaiting dispatch</span>
+                  <% } %>
+                </td>
+                <td class="text-muted small">
+                  <%= new Date(r.created_at).toLocaleDateString() %>
+                  <div class="text-secondary" style="font-size: 0.72rem;"><%= new Date(r.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></div>
+                </td>
+                <td class="text-end pe-4">
+                  <a href="/requests/<%= r.id %>" class="btn btn-sm btn-outline-primary">
+                    Details <i class="bi bi-arrow-right-short"></i>
+                  </a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div class="text-center py-5">
+        <i class="bi bi-search fs-1 text-muted d-block mb-3"></i>
+        <h5 class="fw-bold">No Maintenance Requests Found</h5>
+        <p class="text-muted small mb-3">No submitted tickets matched your current search filters.</p>
+        <a href="/requests" class="btn btn-sm btn-outline-secondary">Reset Filters</a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

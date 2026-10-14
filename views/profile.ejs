@@ -1,0 +1,107 @@
+<%- include('partials/header') %>
+
+<div class="row g-4 my-2">
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-body text-center p-4">
+        <div class="d-inline-flex p-3 bg-primary bg-opacity-10 text-primary rounded-circle mb-3">
+          <i class="bi bi-person-bounding-box fs-1"></i>
+        </div>
+        <h4 class="fw-bold mb-1"><%= user.name %></h4>
+        <div class="mb-2">
+          <span class="badge rounded-pill <%= user.role === 'admin' ? 'bg-danger' : user.role === 'staff' ? 'bg-primary' : user.role === 'faculty' ? 'bg-info text-dark' : 'bg-secondary' %> text-uppercase px-3 py-1">
+            <%= user.role %>
+          </span>
+        </div>
+        <p class="text-muted small mb-3"><%= user.email %></p>
+
+        <ul class="list-group list-group-flush text-start small border-top pt-3">
+          <li class="list-group-item px-0 d-flex justify-content-between">
+            <span class="text-muted">Department:</span>
+            <span class="fw-semibold"><%= user.department || 'Not specified' %></span>
+          </li>
+          <% if (user.staff_id) { %>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">CSPC Staff ID:</span>
+              <span class="fw-bold text-primary"><%= user.staff_id %></span>
+            </li>
+          <% } %>
+          <% if (user.specialization) { %>
+            <li class="list-group-item px-0 d-flex justify-content-between">
+              <span class="text-muted">Specialization:</span>
+              <span class="fw-semibold"><%= user.specialization %></span>
+            </li>
+          <% } %>
+          <li class="list-group-item px-0 d-flex justify-content-between">
+            <span class="text-muted">Member Since:</span>
+            <span><%= new Date(user.created_at).toLocaleDateString() %></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="card-title fw-bold mb-0"><i class="bi bi-person-lines-fill text-primary me-2"></i>Update Personal Details</h5>
+      </div>
+      <div class="card-body p-4">
+        <form action="/profile" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="name" class="form-label fw-semibold">Preferred Name</label>
+              <input type="text" class="form-control" id="name" name="name" value="<%= user.name %>" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Institutional Email (Read Only)</label>
+              <input type="email" class="form-control bg-light" value="<%= user.email %>" readonly disabled>
+            </div>
+            <div class="col-md-6">
+              <label for="department" class="form-label fw-semibold">Department / Section</label>
+              <input type="text" class="form-control" id="department" name="department" value="<%= user.department || '' %>">
+            </div>
+            <% if (user.role === 'staff' || user.role === 'admin') { %>
+              <div class="col-md-6">
+                <label for="specialization" class="form-label fw-semibold">Technical Specialty</label>
+                <input type="text" class="form-control" id="specialization" name="specialization" value="<%= user.specialization || '' %>" placeholder="e.g., Electrical &amp; AV Systems">
+              </div>
+            <% } %>
+            <div class="col-12 mt-4 text-end">
+              <button type="submit" class="btn btn-primary px-4 fw-semibold">Save Profile Changes</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="card-title fw-bold mb-0"><i class="bi bi-shield-lock text-primary me-2"></i>Change Security Password</h5>
+      </div>
+      <div class="card-body p-4">
+        <form action="/profile/change-password" method="POST">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="currentPassword" class="form-label fw-semibold">Current Password</label>
+              <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+            </div>
+            <div class="col-md-4">
+              <label for="newPassword" class="form-label fw-semibold">New Password</label>
+              <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+            </div>
+            <div class="col-md-4">
+              <label for="confirmNewPassword" class="form-label fw-semibold">Confirm New Password</label>
+              <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+            </div>
+            <div class="col-12 mt-4 text-end">
+              <button type="submit" class="btn btn-outline-danger px-4 fw-semibold">Update Password</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
