@@ -4,14 +4,14 @@
 
 ---
 
-## 📋 1. Project Description
+## 1. Project Description
 The **Campus Maintenance System** is a centralized digital web application designed for students, faculty, and administrative staff across Camarines Sur Polytechnic Colleges (CSPC). The system replaces slow, prone-to-loss physical paper request forms and informal communication with a structured, transparent, and mobile-friendly platform.
 
 Users can submit repair requests with damage photographs, track real-time ticket progress, and verify assigned maintenance staff credentials. Facilities Operations Managers and Physical Plant technicians can dispatch personnel, claim work orders, update repair statuses, record technical resolution notes, and inspect campus maintenance efficiency analytics.
 
 ---
 
-## 👥 2. Team Members & Responsibilities
+## 2. Team Members & Responsibilities
 | Member Name | Student Email | Suggested Primary Responsibility | Key Contributions |
 | :--- | :--- | :--- | :--- |
 | **Nicole A. Delloson** | `nicole.delloson@my.cspc.edu.ph` | Backend / Routes / Business Logic | Express server routing, controllers (`requestController`, `staffController`, `adminController`), Multer file uploads, and status workflows. |
@@ -21,14 +21,14 @@ Users can submit repair requests with damage photographs, track real-time ticket
 
 ---
 
-## 🏫 3. Assigned System
+## 3. Assigned System
 - **System**: Campus Maintenance System
 - **Context**: Camarines Sur Polytechnic Colleges (CSPC), Nabua, Camarines Sur
 - **Target Users**: CSPC Students, Academic Faculty, Physical Plant Technicians, and Facility Operations Administrators.
 
 ---
 
-## ✨ 4. Key Features
+## 4. Key Features
 
 ### Requester Portal (Students & Faculty)
 - **Digital Ticket Submission (FN-1, FN-2)**: Report broken fixtures, projectors, water leaks, or furniture with detailed descriptions.
@@ -51,7 +51,7 @@ Users can submit repair requests with damage photographs, track real-time ticket
 
 ---
 
-## 🛠️ 5. Technologies Used
+## 5. Technologies Used
 - **Runtime**: Node.js (v18.0+)
 - **Server Framework**: Express.js (v5.x)
 - **Template Engine**: EJS (Embedded JavaScript)
@@ -63,7 +63,7 @@ Users can submit repair requests with damage photographs, track real-time ticket
 
 ---
 
-## 📂 6. Project Structure
+## 6. Project Structure
 ```
 campus-system/
 ├── config/
@@ -114,7 +114,7 @@ campus-system/
 
 ---
 
-## ⚙️ 7. Installation & Setup Instructions
+## 7. Installation & Setup Instructions
 
 ### Prerequisites
 - Node.js installed (v18.0 or newer recommended)
@@ -153,7 +153,7 @@ npm run seed
 
 ---
 
-## 🚀 8. How to Run the Application
+## 8. How to Run the Application
 
 ### Start the Server:
 ```bash
@@ -172,7 +172,7 @@ npm test
 
 ---
 
-## 🔑 9. Test Accounts (Pre-Seeded)
+## 9. Test Accounts (Pre-Seeded)
 The system is pre-populated with realistic campus accounts representing every role:
 
 | Role | Name | Institutional Email | Password | Details / Specialty |
@@ -184,11 +184,11 @@ The system is pre-populated with realistic campus accounts representing every ro
 | **Student** | Mark Ramirez | `mark.ramirez@my.cspc.edu.ph` | `StudentPass123!` | 3rd Year BSIT 3E |
 | **Student** | Kyla Lomapag | `kyla.lomapag@my.cspc.edu.ph` | `StudentPass123!` | 3rd Year BSIT 3E |
 
-> 💡 *Note: The login page includes convenient **one-click demo login buttons** to easily switch between roles during evaluation and showcase defense!*
+> *Note: The login page includes convenient **one-click demo login buttons** to easily switch between roles during evaluation and showcase defense!*
 
 ---
 
-## 🛡️ 10. Security & Access Control
+## 10. Security & Access Control
 - **Session Management**: Authenticated HTTP-only cookies prevent client-side script access.
 - **Password Protection**: All passwords are encrypted with `bcrypt` (10 salt rounds).
 - **URL Bypass Prevention**: Direct attempts by regular students or faculty to visit `/admin/*` or `/staff/*` are intercepted by `requireRole` middleware and redirected with security warning alerts.
@@ -197,14 +197,14 @@ The system is pre-populated with realistic campus accounts representing every ro
 
 ---
 
-## ⚠️ 11. Known Limitations
+## 11. Known Limitations
 1. **SMS / Push Notifications**: Real-time notifications are currently delivered within the web application dashboard and audit history rather than cellular SMS.
 2. **Door QR Code Scanning**: While room location pickers are dynamic, physical door QR codes have not yet been posted campus-wide by administration (marked UNVERIFIED in Requirements Log AI-6).
 3. **Offline Sync**: Requires an active campus WiFi or internet connection to upload photos and fetch updates.
 
 ---
 
-## 🤖 12. AI Assistance Disclosure
+## 12. AI Assistance Disclosure
 In compliance with Section 20 of the Midterm Project Guidelines:
 - **Tool Used**: Antigravity / Gemini AI Coding Assistant.
 - **Scope of Use**: Assisting in structuring MVC architectural scaffolding, drafting initial requirements based on interview findings (verified in the AI Verification Log in `REQUIREMENTS.md`), and generating SVG placeholder illustrations for demo seed records.
@@ -212,5 +212,5 @@ In compliance with Section 20 of the Midterm Project Guidelines:
 
 ---
 
-## 📜 13. License
+## 13. License
 This project is open-source under the [MIT License](LICENSE).
